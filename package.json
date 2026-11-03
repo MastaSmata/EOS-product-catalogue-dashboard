@@ -1,0 +1,22 @@
+{
+  "name": "eos-pcm",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --strictPort",
+    "backend": "python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 --reload",
+    "test:backend": "python -m pytest backend/tests -q",
+    "build": "vite build",
+    "test": "node scripts/smoke-check.mjs",
+    "preview": "vite preview --host 0.0.0.0 --strictPort",
+    "verify": "pnpm test && pnpm test:backend && pnpm build"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "vite": "^7.1.3"
+  }
+}

@@ -1,0 +1,129 @@
+# EOS PCM — Product Catalog Management
+
+EOS PCM is a responsive product catalogue workspace with Catalogue and Database views backed by one shared product dataset. The frontend uses HTML, CSS, Vanilla JavaScript ES modules, and Vite. The FastAPI backend provides local account management, CSV-backed product persistence, SKU generation, dynamic product variations, media processing, and server-generated exports.
+
+> **Storage mode:** this is a local-testing implementation. Product and account records are stored in CSV files and media is stored on the local filesystem. It is not a production database or cloud-storage deployment.
+
+## Requirements
+
+- Python 3.12 recommended (Python 3.11+ supported by the pinned dependencies).
+- Node.js 22+ (Vite 7 requires Node 20.19+ or 22.12+).
+- pnpm 11.25.0, as pinned in `package.json`.
+- FFmpeg and FFprobe available on `PATH` for WebM video conversion.
+- AVIF-capable Pillow support, supplied by `pillow-avif-plugin` in `backend/requirements.txt` (or a compatible native Pillow build).
+
+## 1. Configure the backend
+
+Run these commands from the project root.
+
+### Windows PowerShell
+
+```powershell
+py -3.12 -m venv backend/.venv
+.\backend\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r backend/requirements.txt
+Copy-Item .env.example .env
+$secret = python -c "import secrets; print(secrets.token_urlsafe(48))"
+(Get-Content .env) -replace '^PCM_JWT_SECRET=.*$', "PCM_JWT_SECRET=$secret" | Set-Content .env
+```
+
+If PowerShell blocks virtual-environment activation, follow the Windows Python documentation for enabling local scripts, or run the virtual environment's Python executable directly. Do not commit `.env`.
+
+### macOS / Linux
+
+```bash
+python3 -m venv backend/.venv
+source backend/.venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r backend/requirements.txt
+cp .env.example .env
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+Copy the generated secret into the `PCM_JWT_SECRET` value in `.env`. Use a unique secret of at least 32 characters. Do not use a shared/example secret.
+
+Install FFmpeg for your operating system and confirm both `ffmpeg -version` and `ffprobe -version` work in the same terminal. If the executables are not on `PATH`, set `PCM_FFMPEG_PATH` and `PCM_FFPROBE_PATH` in `.env` to their full executable paths.
+
+The `.env.example` file defines configurable CSV/media directories, token lifetime, upload limits, currencies, and FFmpeg paths. The backend creates missing CSV files and headers automatically. The default data directory is `backend/data`; processed media is stored in `backend/uploads`.
+
+## 2. Start the backend
+
+With the backend virtual environment activated, run from the project root:
+
+```bash
+pnpm backend
+```
+
+The local API listens at `http://127.0.0.1:8000`. Open the API documentation at `http://127.0.0.1:8000/api/docs`; the health check is `http://127.0.0.1:8000/api/v1/health`. Keep this terminal running.
+
+If you prefer to start it directly, run:
+
+```bash
+python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 --reload
+```
+
+## 3. Start the frontend
+
+Open a second terminal at the project root. Install JavaScript dependencies once, then start Vite:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open `http://localhost:3000`. Vite proxies `/api/*` requests to the FastAPI server at `127.0.0.1:8000`, so the frontend and backend share one browser origin during local development. Do not open the HTML file directly from disk.
+
+Create an account from the sign-in screen to begin. Local registration is enabled for testing; no email verification or password-reset email service is implemented.
+
+## Backend functionality
+
+- **Authentication:** registration, login, logout, profile updates, login-email changes with current-password confirmation, and password changes. Passwords are Argon2-hashed. Email/password changes invalidate old tokens and issue a refreshed token.
+- **Product records:** create, list, retrieve, edit, activate/deactivate, and soft-delete products. Records are scoped to the authenticated account.
+- **SKU generation:** backend-generated `ccc-nnnn-xxx` identifiers. Category sequences are persisted independently per account and never reused after deletion/restart. For example, the tenth `Phones` product has a SKU matching `pho-0010-xxx`. Uncategorized products use `cat`; categories with fewer than three letters are padded consistently (for example `AB` becomes `abx`).
+- **Product variations:** each account starts with `Color` and `Size`; custom text variations can be added, renamed, activated, or deactivated. Historical values are retained when a variation is deactivated.
+- **Media:** up to three media files per product; images are converted to AVIF and videos to WebM. Media URLs are signed, expire, and resolve through the API rather than exposing the upload directory.
+- **Exports:** authenticated CSV and real XLSX exports generated by the backend. Exports support eligible all-record, filtered, and selected-record scopes, with standard and active custom variation fields.
+- **Currency:** defaults to NGN; configured currencies are in `.env`. Currency selection does not perform exchange-rate conversion.
+
+## Storage and configuration
+
+The backend uses separate CSV files for products, users, variation definitions, category sequences, and issued SKUs. A cross-platform file lock and recoverable multi-file write journal protect local storage operations. Do not run multiple unrelated copies of the project against the same data directory. CSV storage is intended for local testing and small-scale development, not high-concurrency production.
+
+Configuration variables include:
+
+- `PCM_JWT_SECRET` — required signing secret (at least 32 characters).
+- `PCM_DATA_DIR` — CSV storage directory.
+- `PCM_MEDIA_DIR` — processed media directory.
+- `PCM_TOKEN_TTL_MINUTES` — token lifetime.
+- `PCM_MAX_IMAGE_BYTES`, `PCM_MAX_VIDEO_BYTES`, `PCM_MAX_VIDEO_SECONDS`, `PCM_MAX_MEDIA_PER_PRODUCT` — upload limits.
+- `PCM_ALLOWED_CURRENCIES` — comma-separated currency-code allow-list.
+- `PCM_FFMPEG_PATH`, `PCM_FFPROBE_PATH` — executable names or paths.
+
+## Testing and build
+
+With the backend virtual environment activated and frontend dependencies installed:
+
+```bash
+pnpm test:backend
+pnpm test
+pnpm build
+```
+
+Or run all three sequentially with `pnpm verify`. Backend tests use temporary storage and cover authentication, account settings, category-based SKU sequences, ownership, product operations, variations, media conversion, CSV persistence, and CSV/XLSX exports. Media tests require AVIF support and FFmpeg/FFprobe.
+
+## Project layout
+
+- `shared/product-schema.json` — canonical standard product schema shared by frontend and backend.
+- `src/api/client.js` — authenticated frontend API client and download handling.
+- `src/state/store.js` — shared frontend state and backend synchronization.
+- `src/components/` and `src/views/` — catalogue, database grid, product form, account settings, and export UI.
+- `backend/app/routers/` — authentication, product, export, and variation routes.
+- `backend/app/product_service.py` — product validation, SKU generation, and product workflows.
+- `backend/app/storage.py` — cross-platform CSV transactions.
+- `backend/app/media.py` — secure upload processing and signed media URLs.
+- `backend/tests/` — backend automated tests.
+
+## Production limitations
+
+Before production use, replace CSV persistence with a real database, move media to private object storage, add email verification and account recovery, define backups and retention, configure deployment-grade secrets and TLS, and review rate limiting, auditing, concurrency, and operational monitoring. Sales metrics remain unavailable until an authoritative sales data source is integrated; the frontend must not fabricate sales totals.

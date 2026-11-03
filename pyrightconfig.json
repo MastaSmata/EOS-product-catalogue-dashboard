@@ -1,0 +1,14 @@
+{
+  "include": ["backend/app", "backend/tests"],
+  "exclude": ["backend/.venv", "backend/data", "backend/uploads", "node_modules", "dist"],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "basic",
+  "venvPath": "/home/ubuntu/eospcm/backend",
+  "venv": ".venv",
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": ["backend"]
+    }
+  ]
+}

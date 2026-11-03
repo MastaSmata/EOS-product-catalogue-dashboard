@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "fields": [
+    {"key":"sku","label":"SKU","type":"text","nullable":false,"editable":false,"required":true,"searchable":true,"sortable":true,"form_group":"System details","width":160},
+    {"key":"name","label":"Product Name","type":"text","nullable":false,"editable":true,"required":true,"searchable":true,"sortable":true,"form_group":"Product identity","width":220},
+    {"key":"slug","label":"Slug","type":"text","nullable":false,"editable":false,"required":true,"searchable":true,"sortable":true,"form_group":"System details","width":185},
+    {"key":"description","label":"Description","type":"textarea","nullable":false,"editable":true,"required":false,"searchable":true,"sortable":false,"form_group":"Product content","width":260},
+    {"key":"short_description","label":"Short Description","type":"textarea","nullable":true,"editable":true,"required":false,"searchable":true,"sortable":false,"form_group":"Product content","width":220},
+    {"key":"category","label":"Category","type":"text","nullable":true,"editable":true,"required":false,"required_for_create":false,"searchable":true,"sortable":true,"filterable":true,"form_group":"Classification","width":150},
+    {"key":"brand","label":"Brand","type":"text","nullable":true,"editable":true,"required":false,"searchable":true,"sortable":true,"form_group":"Classification","width":140},
+    {"key":"cost_price","label":"Cost Price","type":"decimal","nullable":false,"editable":true,"required":true,"searchable":false,"sortable":true,"form_group":"Pricing","width":130,"step":"0.01","min":"0"},
+    {"key":"selling_price","label":"Selling Price","type":"decimal","nullable":false,"editable":true,"required":true,"searchable":false,"sortable":true,"filterable":true,"form_group":"Pricing","width":140,"step":"0.01","min":"0"},
+    {"key":"Color","label":"Color","type":"variation","nullable":true,"editable":true,"required":false,"searchable":true,"sortable":true,"form_group":"Product variations","width":130},
+    {"key":"Size","label":"Size","type":"variation","nullable":true,"editable":true,"required":false,"searchable":true,"sortable":true,"form_group":"Product variations","width":110},
+    {"key":"currency","label":"Currency","type":"currency","nullable":false,"editable":true,"required":true,"searchable":false,"sortable":true,"form_group":"Pricing","width":110},
+    {"key":"status","label":"Status","type":"status","nullable":false,"editable":true,"required":true,"searchable":false,"sortable":true,"filterable":true,"form_group":"Operational status","width":120,"options":["draft","active","archived"]},
+    {"key":"track_inventory","label":"Track Inventory","type":"boolean","nullable":false,"editable":true,"required":true,"searchable":false,"sortable":true,"form_group":"Inventory","width":135},
+    {"key":"stock_quantity","label":"Stock Quantity","type":"integer","nullable":false,"editable":true,"required":true,"searchable":false,"sortable":true,"filterable":true,"form_group":"Inventory","width":130,"step":"1","min":"0"},
+    {"key":"weight","label":"Weight","type":"decimal","nullable":true,"editable":true,"required":false,"searchable":false,"sortable":true,"form_group":"Shipping","width":110,"step":"0.001","min":"0"},
+    {"key":"weight_unit","label":"Weight Unit","type":"text","nullable":true,"editable":true,"required":false,"searchable":false,"sortable":true,"form_group":"Shipping","width":110},
+    {"key":"created_at","label":"Created At","type":"datetime","nullable":false,"editable":false,"required":true,"searchable":false,"sortable":true,"form_group":"System details","width":175},
+    {"key":"updated_at","label":"Updated At","type":"datetime","nullable":false,"editable":false,"required":true,"searchable":false,"sortable":true,"form_group":"System details","width":175},
+    {"key":"deleted_at","label":"Deleted At","type":"datetime","nullable":true,"editable":false,"required":false,"searchable":false,"sortable":true,"form_group":"System details","width":175,"hidden_by_default":true}
+  ],
+  "extensions": [
+    {"key":"id","label":"Product ID","type":"text","internal":true},
+    {"key":"user_id","label":"Owner ID","type":"text","internal":true},
+    {"key":"low_stock_threshold","label":"Low Stock Threshold","type":"integer","editable":true,"default":0,"form_group":"Inventory","width":155},
+    {"key":"tags","label":"Tags","type":"tags","editable":true,"default":[],"form_group":"Product content","width":170},
+    {"key":"media","label":"Product Media","type":"media","editable":true,"default":[],"form_group":"Media","width":180},
+    {"key":"variations","label":"Custom Variations","type":"variation_map","editable":true,"default":{},"form_group":"Product variations","width":150}
+  ]
+}

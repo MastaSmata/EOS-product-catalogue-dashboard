@@ -1,0 +1,1 @@
+"""Health check behavior is implemented directly on the FastAPI application factory."""

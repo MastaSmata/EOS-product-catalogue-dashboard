@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+data/
+uploads/
+*.log
+.pcm-storage.lock
+.pcm-transaction.json
+.transactions/

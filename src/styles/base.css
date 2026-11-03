@@ -1,0 +1,63 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #202b29;
+  background: #f6f7f4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --canvas: #f6f7f4;
+  --surface: #ffffff;
+  --surface-soft: #fbfcfa;
+  --surface-tint: #f0f4f1;
+  --ink: #202b29;
+  --ink-2: #44534f;
+  --muted: #75817d;
+  --muted-light: #99a39f;
+  --border: #e4e9e5;
+  --border-strong: #d4ddd7;
+  --teal: #176b58;
+  --teal-dark: #115141;
+  --teal-soft: #e4f2ed;
+  --teal-pale: #f1f8f4;
+  --blue: #315a78;
+  --blue-soft: #e9f0f5;
+  --sage: #3d8061;
+  --sage-soft: #e7f3eb;
+  --amber: #ad7520;
+  --amber-soft: #fff3dc;
+  --coral: #b24e48;
+  --coral-soft: #fbeceb;
+  --lilac: #715c9a;
+  --lilac-soft: #f0ebf8;
+  --yellow: #866400;
+  --yellow-soft: #fff4ce;
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow-soft: 0 10px 30px rgba(28, 54, 45, .08);
+  --shadow-popover: 0 14px 38px rgba(25, 41, 35, .15);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  font-optical-sizing: auto;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { min-width: 320px; scroll-behavior: smooth; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--canvas); color: var(--ink); font-size: 14px; line-height: 1.5; }
+button, input, select, textarea { font: inherit; }
+button { color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid rgba(23, 107, 88, .30); outline-offset: 2px; }
+button:disabled { cursor: not-allowed !important; opacity: .46; }
+img, video { display: block; max-width: 100%; }
+svg { flex: 0 0 auto; }
+::selection { background: #cde4d9; color: #143b30; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+.eyebrow { margin: 0; color: var(--muted); font-size: 10px; font-weight: 760; letter-spacing: .13em; line-height: 1.3; text-transform: uppercase; }
+small { color: var(--muted); }
