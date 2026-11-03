@@ -1,6 +1,6 @@
-# EOS PCM — Product Catalog Management
+# Product Catalog & Inventory Dashboard for eCommerce Operatives
 
-EOS PCM is a responsive product catalogue workspace with Catalogue and Database views backed by one shared product dataset. The frontend uses HTML, CSS, Vanilla JavaScript ES modules, and Vite. The FastAPI backend provides local account management, CSV-backed product persistence, SKU generation, dynamic product variations, media processing, and server-generated exports.
+PCI dashboard is a responsive product catalogue workspace with Catalogue and Database views backed by one shared product dataset. The frontend uses HTML, CSS, Vanilla JavaScript ES modules, and Vite. The FastAPI backend provides local account management, CSV-backed product persistence, SKU generation, dynamic product variations, media processing, and server-generated exports.
 
 > **Storage mode:** this is a local-testing implementation. Product and account records are stored in CSV files and media is stored on the local filesystem. It is not a production database or cloud-storage deployment.
 
